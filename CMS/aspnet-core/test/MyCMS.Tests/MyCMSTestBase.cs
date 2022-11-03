@@ -14,6 +14,7 @@ using MyCMS.EntityFrameworkCore;
 using MyCMS.EntityFrameworkCore.Seed.Host;
 using MyCMS.EntityFrameworkCore.Seed.Tenants;
 using MyCMS.MultiTenancy;
+using MyCMS.Tests.TestDatas;
 
 namespace MyCMS.Tests
 {
@@ -44,6 +45,8 @@ namespace MyCMS.Tests
                 NormalizeDbContext(context);
                 new TenantRoleAndUserBuilder(context, 1).Create();
             });
+            
+            UsingDbContext(context => new TestDataBuilder(context).Build());
 
             LoginAsDefaultTenantAdmin();
         }

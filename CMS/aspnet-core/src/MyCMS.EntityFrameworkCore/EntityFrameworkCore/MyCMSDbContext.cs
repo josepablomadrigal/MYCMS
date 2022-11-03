@@ -9,7 +9,7 @@ namespace MyCMS.EntityFrameworkCore
     public class MyCMSDbContext : AbpZeroDbContext<Tenant, Role, User, MyCMSDbContext>
     {
         /* Define a DbSet for each entity of the application */
-        
+        public DbSet<ContentManagementSystem.ContentManagementSystem> ContentManagementSystems { get; set; }
         public MyCMSDbContext(DbContextOptions<MyCMSDbContext> options)
             : base(options)
         {
