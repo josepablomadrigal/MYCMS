@@ -8,6 +8,9 @@ using MyCMS.ContentManagementSystem.Dto;
 
 namespace MyCMS.ContentManagementSystem;
 
+/// <summary>
+/// ContentManagementSystemAppService is used to implement business logic of the Content Management System.
+/// </summary>
 public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManagerSystemAppService
 {
     private readonly IRepository<ContentManagementSystem> _cmsRepository;
@@ -17,6 +20,10 @@ public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManag
         _cmsRepository = cmsRepository;
     }
     
+    /// <summary>
+    /// Get all CMS content
+    /// </summary>
+    /// <returns></returns>
     public async Task<ListResultDto<ContentManagementSystemDto>> GetAll()
     {
         var allContentManagementSystem = await _cmsRepository.GetAll()
@@ -27,13 +34,24 @@ public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManag
         );
     }
 
-    public Task<ContentManagementSystemDto> GetCMSContent(GetCMSInput input)
+    /// <summary>
+    /// Get CMS content by Id
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public async Task<ContentManagementSystemDto> GetCMSContent(GetCMSInput input)
     {
-        throw new System.NotImplementedException();
+        var content = await _cmsRepository.GetAsync(input.Id);
+        return ObjectMapper.Map<ContentManagementSystemDto>(content);
     }
 
-    public Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input)
+    /// <summary>
+    /// Inserts or updates a cms content.
+    /// </summary>
+    /// <param name="input"></param>
+    public async Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input)
     {
-        throw new System.NotImplementedException();
+        var cms = ObjectMapper.Map<ContentManagementSystem>(input);
+        await _cmsRepository.InsertOrUpdateAsync(cms);
     }
 }
