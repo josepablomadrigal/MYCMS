@@ -14,20 +14,16 @@ namespace MyCMS.Tests.TestDatas
         public void Build()
         {
             _context.ContentManagementSystems.AddRange(
-                new("one", @"<!DOCTYPE html>
-<html>
-<head>
-<!-- HTML Comment-->
-<title>
+                new("one", @"<title>
 Hello One
 </title>
+<style>
+</style>
+<head>
 </head>
 <body>
 <h1>Hello one </h1>
-<p>greetings</p>
-</body>
-</html>
-"),
+</body>"),
                 new("two", @"<!DOCTYPE html>
 <html>
 <head>
