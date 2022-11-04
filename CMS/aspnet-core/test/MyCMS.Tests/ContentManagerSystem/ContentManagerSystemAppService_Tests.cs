@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Abp.Domain.Entities;
+using Abp.Domain.Uow;
 using Abp.Runtime.Validation;
 using MyCMS.ContentManagementSystem;
 using MyCMS.ContentManagementSystem.Dto;
@@ -43,7 +45,7 @@ Hello One
     public async Task Should_Get_Content_Item()
     {
         // Act
-        var output = await _contentManagerSystemAppService.GetCMSContent(new GetCMSInput{ Id = 1 });
+        var output = await _contentManagerSystemAppService.GetCMSContent(1);
 
         // Assert
         output.ShouldNotBeNull();
@@ -81,15 +83,15 @@ Hello One
             <p>validation</p>
             </body>
             </html>";
-        var inputInsert = new InsertUpdateCMSInput() { PageName = "test", PageContent = _validPageContentHtml };
+        var inputInsert = new InsertUpdateCMSInput() { PageName = "testCMSUpdate", PageContent = _validPageContentHtml };
         
         // Act
         await _contentManagerSystemAppService.InsertOrUpdateCMSContent(inputInsert);
         var output = await _contentManagerSystemAppService.GetAll();
         var contentAdded = output.Items.FirstOrDefault(item => item.PageName == inputInsert.PageName);
-        var inputUpdate = new InsertUpdateCMSInput() { Id = contentAdded.Id, PageName = "test2", PageContent = htmlContentUpdated.Trim() };
+        var inputUpdate = new InsertUpdateCMSInput() { Id = contentAdded.Id, PageName = "testCMSUpdate2`", PageContent = htmlContentUpdated.Trim() };
         await _contentManagerSystemAppService.InsertOrUpdateCMSContent(inputUpdate);
-        var contentUpdated = await _contentManagerSystemAppService.GetCMSContent(new GetCMSInput{ Id = contentAdded.Id });
+        var contentUpdated = await _contentManagerSystemAppService.GetCMSContent(contentAdded.Id);
         
         // Assert
         contentUpdated.ShouldNotBeNull();
@@ -124,6 +126,31 @@ Hello One
         // Assert
         await Assert.ThrowsAsync<AbpValidationException>(async () =>
             await _contentManagerSystemAppService.InsertOrUpdateCMSContent(input));
+    }
+    
+    [Fact]
+    public async void Should_Throw_AbpDbConcurrencyException_When_Update_NonExisting_Content()
+    {
+        // Act
+        var input = new InsertUpdateCMSInput()
+        {
+            Id = 9999, PageName = "test", PageContent = _validPageContentHtml
+        };
+
+        // Assert
+        await Assert.ThrowsAsync<AbpDbConcurrencyException>(async () =>
+            await _contentManagerSystemAppService.InsertOrUpdateCMSContent(input));
+    }
+    
+    [Fact]
+    public async void Should_Throw_EntityNotFoundException_When_Get_NonExisting_Content()
+    {
+        // Act
+        var id = 90000;
+
+        // Assert
+        await Assert.ThrowsAsync<EntityNotFoundException>(async () =>
+            await _contentManagerSystemAppService.GetCMSContent(id));
     }
 }
     

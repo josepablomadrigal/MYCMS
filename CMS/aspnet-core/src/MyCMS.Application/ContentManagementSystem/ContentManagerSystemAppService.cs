@@ -37,18 +37,19 @@ public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManag
     /// <summary>
     /// Get CMS content by Id
     /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    public async Task<ContentManagementSystemDto> GetCMSContent(GetCMSInput input)
+    /// <param name="pageId"></param>
+    /// <returns>Content page</returns>
+    public async Task<ContentManagementSystemDto> GetCMSContent(int pageId)
     {
-        var content = await _cmsRepository.GetAsync(input.Id);
+        var content = await _cmsRepository.GetAsync(pageId);
         return ObjectMapper.Map<ContentManagementSystemDto>(content);
     }
 
     /// <summary>
     /// Inserts or updates a cms content.
     /// </summary>
-    /// <param name="input"></param>
+    /// <remarks>Page name and Page content are required fields</remarks>
+    /// <param name="input">Used to insert/update page content</param>
     public async Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input)
     {
         var cms = ObjectMapper.Map<ContentManagementSystem>(input);

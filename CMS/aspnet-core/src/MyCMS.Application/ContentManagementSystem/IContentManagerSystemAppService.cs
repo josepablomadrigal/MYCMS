@@ -8,7 +8,7 @@ namespace MyCMS.ContentManagementSystem;
 public interface IContentManagerSystemAppService: IApplicationService
 {
     Task<ListResultDto<ContentManagementSystemDto>> GetAll();
-    Task<ContentManagementSystemDto> GetCMSContent(GetCMSInput input);
+    Task<ContentManagementSystemDto> GetCMSContent(int pageId);
     Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input);
     
 }
