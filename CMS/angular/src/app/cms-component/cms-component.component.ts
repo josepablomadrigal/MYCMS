@@ -17,6 +17,8 @@ export class CmsComponentComponent extends AppComponentBase implements OnInit {
 
     pageId: number;
     currentCMS: ContentManagementSystemDto = new ContentManagementSystemDto();
+    pageName = 'Content Management System';
+    pageContent = '<h1>You can edit this page</h1><p>To display your content</p>';
     isLoading: boolean;
 
     constructor(injector: Injector, private route: ActivatedRoute, private _cmsServiceProxy: CmsServiceProxy) {
@@ -34,6 +36,8 @@ export class CmsComponentComponent extends AppComponentBase implements OnInit {
             .get(this.pageId)
             .subscribe((result: ContentManagementSystemDto) => {
                 this.currentCMS = result;
+                this.pageName = this.currentCMS.pageName;
+                this.pageContent = this.currentCMS.pageContent;
                 this.isLoading = false;
             });
     }

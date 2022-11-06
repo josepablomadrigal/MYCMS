@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <h1>{{ currentCMS.pageName }}</h1>
+                    <h1 [hidden]="isLoading">{{ pageName }}</h1>
                 </div>
             </div>
         </div>
@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <div [innerHTML]="currentCMS.pageContent"></div>
+                    <div [hidden]="isLoading" [innerHTML]="pageContent"></div>
                 </div>
             </div>
         </div>
