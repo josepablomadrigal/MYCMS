@@ -1847,15 +1847,15 @@ export class CmsServiceProxy {
     }
 
     /**
-     * @param id (optional)
+     * @param pageId (optional)
      * @return Success
      */
-    get(id: number | undefined): Observable<ContentManagementSystemDto> {
+    get(pageId: number | undefined): Observable<ContentManagementSystemDto> {
         let url_ = this.baseUrl + "/api/services/app/ContentManagerSystem/GetCMSContent?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "pageId=" + encodeURIComponent("" + id) + "&";
+        if (pageId === null)
+            throw new Error("The parameter 'pageId' cannot be null.");
+        else if (pageId !== undefined)
+            url_ += "pageId=" + encodeURIComponent("" + pageId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
