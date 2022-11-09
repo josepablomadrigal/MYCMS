@@ -8,7 +8,7 @@ import { UsersComponent } from './users/users.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
-import {CmsComponentComponent} from './cms-component/cms-component.component';
+import {CmsComponent} from './cms-component/cms.component';
 
 @NgModule({
     imports: [
@@ -21,7 +21,7 @@ import {CmsComponentComponent} from './cms-component/cms-component.component';
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
-                    { path: 'cms/:pageId', component: CmsComponentComponent, canActivate: [AppRouteGuard] },
+                    { path: 'cms/:pageId', component: CmsComponent, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] }
                 ]

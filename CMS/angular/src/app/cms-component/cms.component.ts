@@ -6,14 +6,14 @@ import {AppComponentBase} from '@shared/app-component-base';
 
 @Component({
     selector: 'app-cms-component',
-    templateUrl: './cms-component.component.html',
-    styleUrls: ['./cms-component.component.css'],
+    templateUrl: './cms.component.html',
+    styleUrls: ['./cms.component.css'],
     animations: [appModuleAnimation()],
     providers: [
         {provide: Number, useValue: 1}
     ]
 })
-export class CmsComponentComponent extends AppComponentBase implements OnInit {
+export class CmsComponent extends AppComponentBase implements OnInit {
 
     pageId: number;
     currentCMS: ContentManagementSystemDto = new ContentManagementSystemDto();

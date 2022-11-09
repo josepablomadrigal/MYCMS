@@ -1,21 +1,21 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {CmsComponentComponent} from './cms-component.component';
-import {CmsServiceProxy} from '@shared/service-proxies/service-proxies';
-import {HttpClientTestingModule, HttpTestingController} from '@node_modules/@angular/common/http/testing';
-import {ActivatedRoute} from '@angular/router';
-import {AppSessionService} from '@shared/session/app-session.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CmsComponent } from './cms.component';
+import { CmsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { HttpClientTestingModule, HttpTestingController } from '@node_modules/@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+import { AppSessionService } from '@shared/session/app-session.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('CmsComponentComponent', () => {
-    let component: CmsComponentComponent;
-    let fixture: ComponentFixture<CmsComponentComponent>;
+describe('CmsComponent', () => {
+    let component: CmsComponent;
+    let fixture: ComponentFixture<CmsComponent>;
     let httpController: HttpTestingController;
     let cmsService: CmsServiceProxy;
     const fakePageId = 1;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [CmsComponentComponent],
+            declarations: [CmsComponent],
             imports: [BrowserAnimationsModule, HttpClientTestingModule],
 
             providers: [
@@ -43,7 +43,7 @@ describe('CmsComponentComponent', () => {
                                 },
                             },
                         },
-                        getShownLoginName: function() {
+                        getShownLoginName: function () {
                             return 'admin';
                         }
                     },
@@ -55,7 +55,7 @@ describe('CmsComponentComponent', () => {
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(CmsComponentComponent);
+        fixture = TestBed.createComponent(CmsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
