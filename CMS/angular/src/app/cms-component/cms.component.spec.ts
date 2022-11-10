@@ -5,15 +5,19 @@ import { HttpClientTestingModule, HttpTestingController } from '@node_modules/@a
 import { ActivatedRoute } from '@angular/router';
 import { AppSessionService } from '@shared/session/app-session.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 describe('CmsComponent', () => {
     let component: CmsComponent;
     let fixture: ComponentFixture<CmsComponent>;
     let httpController: HttpTestingController;
     let cmsService: CmsServiceProxy;
+    let bsModalSpy: jasmine.SpyObj<BsModalService>;
     const fakePageId = 1;
 
     beforeEach(async () => {
+        const spy = jasmine.createSpyObj('BsModalService', ['show']);
         await TestBed.configureTestingModule({
             declarations: [CmsComponent],
             imports: [BrowserAnimationsModule, HttpClientTestingModule],
@@ -47,9 +51,11 @@ describe('CmsComponent', () => {
                             return 'admin';
                         }
                     },
-                }
+                },
+                {provide: BsModalService, useValue: spy}
             ]
         }).compileComponents();
+        bsModalSpy = TestBed.inject(BsModalService) as jasmine.SpyObj<BsModalService>;
         cmsService = TestBed.inject(CmsServiceProxy);
         httpController = TestBed.inject(HttpTestingController);
     });
@@ -64,10 +70,24 @@ describe('CmsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should call GetCMSContent', () => {
-        httpController.expectOne({
-            method: 'GET',
-            url: `/api/services/app/ContentManagerSystem/GetCMSContent?pageId=${fakePageId}`,
+    describe('when the component has pageOd ', () => {
+        it('should call GetCMSContent', () => {
+            httpController.expectOne({
+                method: 'GET',
+                url: `/api/services/app/ContentManagerSystem/GetCMSContent?pageId=${fakePageId}`,
+            });
+        });
+
+        it('Elements should be present', () => {
+            const createBtn = fixture.debugElement.query(By.css('[data-testid="createBtn"]'));
+            expect(createBtn).toBeTruthy();
+            expect(true).toBeTruthy();
+        });
+        it('should click create button call service modal show', () => {
+            const createBtn = fixture.debugElement.query(By.css('[data-testid="createBtn"]')).nativeElement;
+            createBtn.click();
+            expect(bsModalSpy.show.calls.count()).toBe(1);
         });
     });
+
 });

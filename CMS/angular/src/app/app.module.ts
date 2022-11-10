@@ -39,6 +39,7 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { CmsComponent } from './cms-component/cms.component';
+import { CreateCmsDialogComponent } from './cms-component/create-cms-dialog/create-cms-dialog.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { CmsComponent } from './cms-component/cms.component';
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
-    CmsComponent
+    CmsComponent,
+    CreateCmsDialogComponent
   ],
   imports: [
     CommonModule,
