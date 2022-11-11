@@ -14,10 +14,17 @@ describe('CmsComponent', () => {
     let httpController: HttpTestingController;
     let cmsService: CmsServiceProxy;
     let bsModalSpy: jasmine.SpyObj<BsModalService>;
+    let activatedRouteSpy: jasmine.SpyObj<ActivatedRoute>;
     const fakePageId = 1;
 
     beforeEach(async () => {
-        const spy = jasmine.createSpyObj('BsModalService', ['show']);
+        const bsModalServiceSpy = jasmine.createSpyObj('BsModalService', ['show']);
+        const routeSpy = jasmine.createSpyObj('ActivatedRoute', ['snapshot']);
+        routeSpy.snapshot = {
+            paramMap: {
+                get: () => null
+            }
+        };
         await TestBed.configureTestingModule({
             declarations: [CmsComponent],
             imports: [BrowserAnimationsModule, HttpClientTestingModule],
@@ -26,15 +33,7 @@ describe('CmsComponent', () => {
                 CmsServiceProxy,
                 {
                     provide: ActivatedRoute,
-                    useValue: {
-                        snapshot: {
-                            paramMap: {
-                                get: (id: number) => {
-                                    return 1;
-                                }
-                            }
-                        }
-                    }
+                    useValue: routeSpy
                 },
                 {
                     provide: AppSessionService,
@@ -52,12 +51,13 @@ describe('CmsComponent', () => {
                         }
                     },
                 },
-                {provide: BsModalService, useValue: spy}
+                {provide: BsModalService, useValue: bsModalServiceSpy}
             ]
         }).compileComponents();
         bsModalSpy = TestBed.inject(BsModalService) as jasmine.SpyObj<BsModalService>;
         cmsService = TestBed.inject(CmsServiceProxy);
         httpController = TestBed.inject(HttpTestingController);
+        activatedRouteSpy = TestBed.inject(ActivatedRoute) as jasmine.SpyObj<ActivatedRoute>;
     });
 
     beforeEach(() => {
@@ -70,7 +70,37 @@ describe('CmsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    describe('when the component has pageOd ', () => {
+    describe('when the component does not have a pageId in the route', () => {
+        beforeEach(() => {
+            activatedRouteSpy.snapshot.paramMap.get = () => null;
+            fixture = TestBed.createComponent(CmsComponent);
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+        });
+
+        it('should not call getCMSContent', () => {
+            httpController.expectNone({
+                method: 'GET',
+                url: `/api/services/app/ContentManagerSystem/GetCMSContent?pageId=${fakePageId}`,
+            });
+        });
+
+        it('should create button should be present and edit button should not be present', () => {
+            const createBtn = fixture.debugElement.query(By.css('[data-testid="createBtn"]'));
+            const editBtn = fixture.debugElement.query(By.css('[data-testid="editBtn"]'));
+            expect(createBtn).toBeTruthy();
+            expect(editBtn).toBeFalsy();
+        });
+    });
+
+    describe('when the component has pageId in the route', () => {
+        beforeEach(() => {
+            activatedRouteSpy.snapshot.paramMap.get = () => fakePageId.toString();
+            fixture = TestBed.createComponent(CmsComponent);
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+        });
+
         it('should call GetCMSContent', () => {
             httpController.expectOne({
                 method: 'GET',
@@ -78,14 +108,22 @@ describe('CmsComponent', () => {
             });
         });
 
-        it('Elements should be present', () => {
+        it('should create and edit buttons be present', () => {
             const createBtn = fixture.debugElement.query(By.css('[data-testid="createBtn"]'));
+            const editBtn = fixture.debugElement.query(By.css('[data-testid="editBtn"]'));
             expect(createBtn).toBeTruthy();
-            expect(true).toBeTruthy();
+            expect(editBtn).toBeTruthy();
         });
+
         it('should click create button call service modal show', () => {
             const createBtn = fixture.debugElement.query(By.css('[data-testid="createBtn"]')).nativeElement;
             createBtn.click();
+            expect(bsModalSpy.show.calls.count()).toBe(1);
+        });
+
+        it('should click create button call service modal show', () => {
+            const editBtn = fixture.debugElement.query(By.css('[data-testid="editBtn"]')).nativeElement;
+            editBtn.click();
             expect(bsModalSpy.show.calls.count()).toBe(1);
         });
     });

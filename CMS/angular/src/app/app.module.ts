@@ -40,6 +40,7 @@ import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { CmsComponent } from './cms-component/cms.component';
 import { CreateCmsDialogComponent } from './cms-component/create-cms-dialog/create-cms-dialog.component';
+import { EditCmsDialogComponent } from './cms-component/edit-cms-dialog/edit-cms-dialog.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { CreateCmsDialogComponent } from './cms-component/create-cms-dialog/crea
     SidebarUserPanelComponent,
     SidebarMenuComponent,
     CmsComponent,
-    CreateCmsDialogComponent
+    CreateCmsDialogComponent,
+    EditCmsDialogComponent
   ],
   imports: [
     CommonModule,

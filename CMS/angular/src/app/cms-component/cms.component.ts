@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BsModalService } from '@node_modules/ngx-bootstrap/modal';
 import { CreateCmsDialogComponent } from '@app/cms-component/create-cms-dialog/create-cms-dialog.component';
+import { EditCmsDialogComponent } from '@app/cms-component/edit-cms-dialog/edit-cms-dialog.component';
 
 @Component({
     selector: 'app-cms-component',
@@ -17,7 +18,7 @@ import { CreateCmsDialogComponent } from '@app/cms-component/create-cms-dialog/c
 })
 export class CmsComponent extends AppComponentBase implements OnInit {
 
-    pageId: number;
+    pageId?: number;
     currentCMS: ContentManagementSystemDto = new ContentManagementSystemDto();
     pageName = 'Content Management System';
     pageContent = '<h1>You can edit this page</h1><p>To display your content</p>';
@@ -44,17 +45,29 @@ export class CmsComponent extends AppComponentBase implements OnInit {
                     class: 'modal-lg',
                 }
             );
+        } else {
+            this._modalService.show(
+                EditCmsDialogComponent,
+                {
+                    class: 'modal-lg',
+                    initialState: {
+                        id: id
+                    }
+                }
+            );
         }
     }
 
     private getCurrentContentPage() {
-        this._cmsServiceProxy
-            .get(this.pageId)
-            .subscribe((result: ContentManagementSystemDto) => {
-                this.currentCMS = result;
-                this.pageName = this.currentCMS.pageName;
-                this.pageContent = this.currentCMS.pageContent;
-                this.isLoading = false;
-            });
+        if (this.pageId) {
+            this._cmsServiceProxy
+                .get(this.pageId)
+                .subscribe((result: ContentManagementSystemDto) => {
+                    this.currentCMS = result;
+                    this.pageName = this.currentCMS.pageName;
+                    this.pageContent = this.currentCMS.pageContent;
+                    this.isLoading = false;
+                });
+        }
     }
 }
