@@ -5,6 +5,7 @@ import { CmsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { HttpClientTestingModule, HttpTestingController } from '@node_modules/@angular/common/http/testing';
 import { BsModalRef } from '@node_modules/ngx-bootstrap/modal';
 import { AppSessionService } from '@shared/session/app-session.service';
+import { FormsModule } from '@angular/forms';
 
 describe('CreateCmsDialogComponent', () => {
     let component: CreateCmsDialogComponent;
@@ -14,12 +15,13 @@ describe('CreateCmsDialogComponent', () => {
     let bsModalSpy: jasmine.SpyObj<BsModalRef>;
 
     beforeEach(async () => {
-        const bsModalServiceSpy = jasmine.createSpyObj('BsModalService', ['hide']);
+        const bsModalRefSpy = jasmine.createSpyObj('BsModalRef', ['hide']);
         await TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule],
             declarations: [CreateCmsDialogComponent],
-            imports: [HttpClientTestingModule],
             providers: [
                 CmsServiceProxy,
+                {provide: BsModalRef, useValue: bsModalRefSpy},
                 {
                     provide: AppSessionService,
                     useValue: {
@@ -35,8 +37,7 @@ describe('CreateCmsDialogComponent', () => {
                             return 'admin';
                         }
                     },
-                },
-                {provide: BsModalRef, useValue: bsModalServiceSpy}
+                }
             ],
         }).compileComponents();
         bsModalSpy = TestBed.inject(BsModalRef) as jasmine.SpyObj<BsModalRef>;

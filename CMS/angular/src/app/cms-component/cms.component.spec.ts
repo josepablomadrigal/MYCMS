@@ -104,7 +104,7 @@ describe('CmsComponent', () => {
         it('should call GetCMSContent', () => {
             httpController.expectOne({
                 method: 'GET',
-                url: `/api/services/app/ContentManagerSystem/GetCMSContent?pageId=${fakePageId}`,
+                url: `/api/services/app/ContentManagementSystem/GetCMSContent?pageId=${fakePageId}`,
             });
         });
 

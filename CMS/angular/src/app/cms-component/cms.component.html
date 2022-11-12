@@ -6,12 +6,12 @@
                     <h1 [hidden]="isLoading">{{ pageName }}</h1>
                 </div>
                 <div class="col-6 text-right">
-                    <a data-testid="createBtn" class="btn bg-blue"
+                    <a data-testid="createBtn" class="btn bg-blue create-cms-btn"
                        (click)="showCreateOrEditCMSDialog()">
                         <i class="fa fa-plus-square"></i>
                         {{ "Create" }}
                     </a>
-                    <a *ngIf="pageId" data-testid="editBtn" class="btn bg-blue"
+                    <a *ngIf="pageId" data-testid="editBtn" class="btn bg-secondary"
                        (click)="showCreateOrEditCMSDialog()">
                         <i class="fa fa-plus-square"></i>
                         {{ "Edit" }}
