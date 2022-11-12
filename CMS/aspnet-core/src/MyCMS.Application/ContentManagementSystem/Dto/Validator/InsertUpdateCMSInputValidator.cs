@@ -5,7 +5,7 @@ using HtmlAgilityPack;
 
 namespace MyCMS.ContentManagementSystem.Dto.Validator;
 
-public class InsertUpdateCMSInputValidator: AbstractValidator<InsertUpdateCMSInput>
+public class InsertUpdateCMSInputValidator: AbstractValidator<UpsertCMSInput>
 {
     public InsertUpdateCMSInputValidator()
     {

@@ -9,6 +9,6 @@ public interface IContentManagerSystemAppService: IApplicationService
 {
     Task<ListResultDto<ContentManagementSystemDto>> GetAll();
     Task<ContentManagementSystemDto> GetCMSContent(int pageId);
-    Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input);
+    Task Upsert(UpsertCMSInput input);
     
 }

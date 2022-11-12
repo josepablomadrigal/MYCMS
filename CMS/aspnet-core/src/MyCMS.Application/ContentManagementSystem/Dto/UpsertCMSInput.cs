@@ -3,7 +3,7 @@
 namespace MyCMS.ContentManagementSystem.Dto;
 
 [AutoMapTo(typeof(ContentManagementSystem))]
-public class InsertUpdateCMSInput
+public class UpsertCMSInput
 {
     public int? Id { get; set; }
     public string PageName { get; set; }

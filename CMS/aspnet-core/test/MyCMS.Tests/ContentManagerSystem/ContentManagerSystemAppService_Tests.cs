@@ -58,8 +58,8 @@ Hello One
     public async void Should_Insert_Content()
     {
         // Act
-        var input = new InsertUpdateCMSInput() { PageName = "test", PageContent = _validPageContentHtml.Trim() };
-        await _contentManagerSystemAppService.InsertOrUpdateCMSContent(input);
+        var input = new UpsertCMSInput() { PageName = "test", PageContent = _validPageContentHtml.Trim() };
+        await _contentManagerSystemAppService.Upsert(input);
         var output = await _contentManagerSystemAppService.GetAll();
         var contentAdded = output.Items.FirstOrDefault(item => item.PageName == input.PageName);
         
@@ -83,14 +83,14 @@ Hello One
             <p>validation</p>
             </body>
             </html>";
-        var inputInsert = new InsertUpdateCMSInput() { PageName = "testCMSUpdate", PageContent = _validPageContentHtml };
+        var inputInsert = new UpsertCMSInput() { PageName = "testCMSUpdate", PageContent = _validPageContentHtml };
         
         // Act
-        await _contentManagerSystemAppService.InsertOrUpdateCMSContent(inputInsert);
+        await _contentManagerSystemAppService.Upsert(inputInsert);
         var output = await _contentManagerSystemAppService.GetAll();
         var contentAdded = output.Items.FirstOrDefault(item => item.PageName == inputInsert.PageName);
-        var inputUpdate = new InsertUpdateCMSInput() { Id = contentAdded.Id, PageName = "testCMSUpdate2`", PageContent = htmlContentUpdated.Trim() };
-        await _contentManagerSystemAppService.InsertOrUpdateCMSContent(inputUpdate);
+        var inputUpdate = new UpsertCMSInput() { Id = contentAdded.Id, PageName = "testCMSUpdate2`", PageContent = htmlContentUpdated.Trim() };
+        await _contentManagerSystemAppService.Upsert(inputUpdate);
         var contentUpdated = await _contentManagerSystemAppService.GetCMSContent(contentAdded.Id);
         
         // Assert
@@ -118,28 +118,28 @@ Hello One
     public async void Should_Throw_AbpValidationException_When_Insert_Invalid_Page_Content_(string pageContent)
     {
         // Act
-        var input = new InsertUpdateCMSInput()
+        var input = new UpsertCMSInput()
         {
             PageName = "test", PageContent = pageContent
         };
 
         // Assert
         await Assert.ThrowsAsync<AbpValidationException>(async () =>
-            await _contentManagerSystemAppService.InsertOrUpdateCMSContent(input));
+            await _contentManagerSystemAppService.Upsert(input));
     }
     
     [Fact]
     public async void Should_Throw_AbpDbConcurrencyException_When_Update_NonExisting_Content()
     {
         // Act
-        var input = new InsertUpdateCMSInput()
+        var input = new UpsertCMSInput()
         {
             Id = 9999, PageName = "test", PageContent = _validPageContentHtml
         };
 
         // Assert
         await Assert.ThrowsAsync<AbpDbConcurrencyException>(async () =>
-            await _contentManagerSystemAppService.InsertOrUpdateCMSContent(input));
+            await _contentManagerSystemAppService.Upsert(input));
     }
     
     [Fact]

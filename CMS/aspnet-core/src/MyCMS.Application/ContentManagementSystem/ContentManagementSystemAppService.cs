@@ -11,11 +11,11 @@ namespace MyCMS.ContentManagementSystem;
 /// <summary>
 /// ContentManagementSystemAppService is used to implement business logic of the Content Management System.
 /// </summary>
-public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManagerSystemAppService
+public class ContentManagementSystemAppService : MyCMSAppServiceBase, IContentManagerSystemAppService
 {
     private readonly IRepository<ContentManagementSystem> _cmsRepository;
 
-    public ContentManagerSystemAppService(IRepository<ContentManagementSystem> cmsRepository)
+    public ContentManagementSystemAppService(IRepository<ContentManagementSystem> cmsRepository)
     {
         _cmsRepository = cmsRepository;
     }
@@ -50,7 +50,7 @@ public class ContentManagerSystemAppService : MyCMSAppServiceBase, IContentManag
     /// </summary>
     /// <remarks>Page name and Page content are required fields</remarks>
     /// <param name="input">Used to insert/update page content</param>
-    public async Task InsertOrUpdateCMSContent(InsertUpdateCMSInput input)
+    public async Task Upsert(UpsertCMSInput input)
     {
         var cms = ObjectMapper.Map<ContentManagementSystem>(input);
         await _cmsRepository.InsertOrUpdateAsync(cms);
