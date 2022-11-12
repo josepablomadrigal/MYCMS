@@ -12,7 +12,7 @@
                         {{ "Create" }}
                     </a>
                     <a *ngIf="pageId" data-testid="editBtn" class="btn bg-secondary"
-                       (click)="showCreateOrEditCMSDialog()">
+                       (click)="showCreateOrEditCMSDialog(this.pageId)">
                         <i class="fa fa-plus-square"></i>
                         {{ "Edit" }}
                     </a>
