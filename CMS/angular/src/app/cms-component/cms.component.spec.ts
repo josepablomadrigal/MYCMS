@@ -106,6 +106,7 @@ describe('CmsComponent', () => {
                 method: 'GET',
                 url: `/api/services/app/ContentManagementSystem/GetCMSContent?pageId=${fakePageId}`,
             });
+            httpController.verify();
         });
 
         it('should create and edit buttons be present', () => {

@@ -6,6 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@node_modules/@a
 import { BsModalRef } from '@node_modules/ngx-bootstrap/modal';
 import { AppSessionService } from '@shared/session/app-session.service';
 import { FormsModule } from '@angular/forms';
+import { findEl } from '@app/spec-helpers/element.spec-helper';
 
 describe('CreateCmsDialogComponent', () => {
     let component: CreateCmsDialogComponent;
@@ -52,6 +53,23 @@ describe('CreateCmsDialogComponent', () => {
     });
 
     it('should create', () => {
+        const pageNameInput = findEl(fixture, 'pageName');
+        const pageContentInput = findEl(fixture, 'pageContent');
+
         expect(component).toBeTruthy();
+        expect(pageNameInput).toBeTruthy();
+        expect(pageContentInput).toBeTruthy();
+
     });
+
+    it('should call createPage', () => {
+        component.save();
+        httpController.expectOne({
+            method: 'POST',
+            url: '/api/services/app/ContentManagementSystem/Upsert'
+        });
+        httpController.verify();
+    });
+
+
 });
