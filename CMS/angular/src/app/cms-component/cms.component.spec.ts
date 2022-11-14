@@ -7,6 +7,8 @@ import { AppSessionService } from '@shared/session/app-session.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { ContentManagementSystemService } from '@shared/cms/content-management-system.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CmsComponent', () => {
     let component: CmsComponent;
@@ -22,12 +24,17 @@ describe('CmsComponent', () => {
         const routeSpy = jasmine.createSpyObj('ActivatedRoute', ['snapshot']);
         routeSpy.snapshot = {
             paramMap: {
-                get: () => null
+                get: () => null,
+                subscribe: () => null
             }
         };
+        routeSpy.params = {
+            subscribe: () => null
+        };
+
         await TestBed.configureTestingModule({
             declarations: [CmsComponent],
-            imports: [BrowserAnimationsModule, HttpClientTestingModule],
+            imports: [BrowserAnimationsModule, HttpClientTestingModule, RouterTestingModule],
 
             providers: [
                 CmsServiceProxy,
@@ -51,7 +58,8 @@ describe('CmsComponent', () => {
                         }
                     },
                 },
-                {provide: BsModalService, useValue: bsModalServiceSpy}
+                {provide: BsModalService, useValue: bsModalServiceSpy},
+                ContentManagementSystemService
             ]
         }).compileComponents();
         bsModalSpy = TestBed.inject(BsModalService) as jasmine.SpyObj<BsModalService>;

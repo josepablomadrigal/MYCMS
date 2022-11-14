@@ -1,11 +1,12 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { CmsServiceProxy, ContentManagementSystemDto } from '@shared/service-proxies/service-proxies';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { BsModalService } from '@node_modules/ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from '@node_modules/ngx-bootstrap/modal';
 import { CreateCmsDialogComponent } from '@app/cms-component/create-cms-dialog/create-cms-dialog.component';
 import { EditCmsDialogComponent } from '@app/cms-component/edit-cms-dialog/edit-cms-dialog.component';
+import { ContentManagementSystemService } from '@shared/cms/content-management-system.service';
 
 @Component({
     selector: 'app-cms-component',
@@ -27,10 +28,15 @@ export class CmsComponent extends AppComponentBase implements OnInit {
     constructor(injector: Injector,
                 private route: ActivatedRoute,
                 private _cmsServiceProxy: CmsServiceProxy,
-                private _modalService: BsModalService) {
+                private _modalService: BsModalService,
+                private _contentManagementSystemService: ContentManagementSystemService) {
         super(injector);
         this.isLoading = true;
         this.pageId = Number(this.route.snapshot.paramMap.get('pageId'));
+        this.route.params.subscribe((params: Params) => {
+            this.pageId = params['pageId'];
+            this.getCurrentContentPage();
+        });
     }
 
     ngOnInit(): void {
@@ -38,24 +44,29 @@ export class CmsComponent extends AppComponentBase implements OnInit {
     }
 
     showCreateOrEditCMSDialog(id?: number) {
+        let createOrEditCmsDialog: BsModalRef;
         if (!id) {
-            this._modalService.show(
+            createOrEditCmsDialog = this._modalService.show(
                 CreateCmsDialogComponent,
                 {
                     class: 'modal-lg',
                 }
             );
         } else {
-            this._modalService.show(
+            createOrEditCmsDialog = this._modalService.show(
                 EditCmsDialogComponent,
                 {
                     class: 'modal-lg',
                     initialState: {
-                        id: id
+                        currentCms: this.currentCMS
                     }
                 }
             );
         }
+        createOrEditCmsDialog.content.onSave.subscribe(() => {
+            this.getCurrentContentPage();
+            this._contentManagementSystemService.setContentAddedEvent(true);
+        });
     }
 
     private getCurrentContentPage() {

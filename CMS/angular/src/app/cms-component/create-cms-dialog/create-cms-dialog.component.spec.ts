@@ -39,7 +39,7 @@ describe('CreateCmsDialogComponent', () => {
                         }
                     },
                 }
-            ],
+            ]
         }).compileComponents();
         bsModalSpy = TestBed.inject(BsModalRef) as jasmine.SpyObj<BsModalRef>;
         cmsService = TestBed.inject(CmsServiceProxy);
@@ -62,7 +62,7 @@ describe('CreateCmsDialogComponent', () => {
 
     });
 
-    it('should call createPage', () => {
+    it('should call Upsert', () => {
         component.save();
         httpController.expectOne({
             method: 'POST',

@@ -1957,16 +1957,68 @@ export class CmsServiceProxy {
         }
         return _observableOf<ContentManagementSystemDto>(<any>null);
     }
+
+    getAll(): Observable<ContentManagementSystemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ContentManagementSystem/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<ContentManagementSystemDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ContentManagementSystemDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<ContentManagementSystemDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                if (resultData200 && resultData200.items) {
+                    result200 = [] as any;
+                    for (let item of resultData200.items)
+                        result200.push(ContentManagementSystemDto.fromJS(item));
+                }
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ContentManagementSystemDto[]>(<any>null);
+    }
 }
 
 export interface IUpsertContentManagementSystemDto {
-    pageId?: number;
+    id?: number;
     pageName: string;
     pageContent: string;
 }
 
 export class UpsertContentManagementSystemDto implements IUpsertContentManagementSystemDto {
-    pageId?: number;
+    id?: number;
     pageContent: string;
     pageName: string;
     constructor(data?: IUpsertContentManagementSystemDto) {
@@ -1979,7 +2031,7 @@ export class UpsertContentManagementSystemDto implements IUpsertContentManagemen
     }
     init(_data?: any) {
         if (_data) {
-            this.pageId = _data["pageId"];
+            this.id = _data["id"];
             this.pageContent = _data["pageContent"];
             this.pageName = _data["pageName"];
         }
@@ -1994,7 +2046,7 @@ export class UpsertContentManagementSystemDto implements IUpsertContentManagemen
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["pageId"] = this.pageId;
+        data["id"] = this.id;
         data["pageName"] = this.pageName;
         data["pageContent"] = this.pageContent;
         return data;
