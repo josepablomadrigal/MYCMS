@@ -1,14 +1,16 @@
-import {Component, Injector, OnInit} from '@angular/core';
-import {AppComponentBase} from '@shared/app-component-base';
+import { Component, Injector, OnInit } from '@angular/core';
+import { AppComponentBase } from '@shared/app-component-base';
 import {
     Router,
     RouterEvent,
     NavigationEnd,
     PRIMARY_OUTLET
 } from '@angular/router';
-import {BehaviorSubject} from 'rxjs';
-import {filter} from 'rxjs/operators';
-import {MenuItem} from '@shared/layout/menu-item';
+import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MenuItem } from '@shared/layout/menu-item';
+import { ContentManagementSystemService } from '@shared/cms/content-management-system.service';
+import { CmsServiceProxy, ContentManagementSystemDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'sidebar-menu',
@@ -21,7 +23,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     routerEvents: BehaviorSubject<RouterEvent> = new BehaviorSubject(undefined);
     homeRoute = '/app/about';
 
-    constructor(injector: Injector, private router: Router) {
+    constructor(injector: Injector, private router: Router, private _cmsServiceProxy: CmsServiceProxy, private _contentManagementSystemService: ContentManagementSystemService) {
         super(injector);
         this.router.events.subscribe(this.routerEvents);
     }
@@ -39,12 +41,28 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                     this.activateMenuItems('/' + primaryUrlSegmentGroup.toString());
                 }
             });
+        this.getAllCmsMenuItems();
+        this._contentManagementSystemService.contentAdded$.subscribe((isContentAdded) => {
+            if (isContentAdded) {
+                this.getAllCmsMenuItems();
+            }
+        });
+    }
+
+    private getAllCmsMenuItems() {
+        this._cmsServiceProxy.getAll().subscribe((result: ContentManagementSystemDto[]) => {
+            this.menuItems[2].children = [];
+            result.forEach((item) => {
+                this.menuItems[2].children.push(new MenuItem(this.l(item.id.toString()), '/app/cms/' + item.id, 'fas fa-book', ''));
+            });
+        });
     }
 
     getMenuItems(): MenuItem[] {
         return [
             new MenuItem(this.l('About'), '/app/about', 'fas fa-info-circle'),
             new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home'),
+            new MenuItem(this.l('Content management system'), '', 'fas fa-cloud', '', []),
             new MenuItem(
                 this.l('Roles'),
                 '/app/roles',

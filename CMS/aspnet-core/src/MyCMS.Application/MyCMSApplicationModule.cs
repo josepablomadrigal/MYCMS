@@ -1,4 +1,5 @@
 ﻿using Abp.AutoMapper;
+using Abp.FluentValidation;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using MyCMS.Authorization;
@@ -7,7 +8,8 @@ namespace MyCMS
 {
     [DependsOn(
         typeof(MyCMSCoreModule), 
-        typeof(AbpAutoMapperModule))]
+        typeof(AbpAutoMapperModule),
+        typeof(AbpFluentValidationModule))]
     public class MyCMSApplicationModule : AbpModule
     {
         public override void PreInitialize()

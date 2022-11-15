@@ -7,7 +7,8 @@ using MyCMS.Configuration;
 namespace MyCMS.Web.Host.Startup
 {
     [DependsOn(
-       typeof(MyCMSWebCoreModule))]
+       typeof(MyCMSWebCoreModule),
+       typeof(MyCMSApplicationModule))]
     public class MyCMSWebHostModule: AbpModule
     {
         private readonly IWebHostEnvironment _env;

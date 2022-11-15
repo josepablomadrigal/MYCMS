@@ -1,0 +1,65 @@
+<form
+        class="form-horizontal"
+        autocomplete="off"
+        #editCMSForm="ngForm"
+        (ngSubmit)="edit()"
+>
+    <abp-modal-header
+            [title]="'Create new page content'"
+            (onCloseClick)="bsModalRef.hide()"
+    ></abp-modal-header>
+    <div class="modal-body">
+
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="pageName">
+                {{ "Page Name" }}
+            </label>
+            <div class="col-md-9">
+                <input
+                        data-testid="pageName"
+                        type="text"
+                        class="form-control"
+                        name="pageName"
+                        id="pageName"
+                        required
+                        minlength="2"
+                        maxlength="32"
+                        [(ngModel)]="cmsDto.pageName"
+                        #nameModel="ngModel"
+                        #nameEl
+                />
+                <abp-validation-summary
+                        [control]="nameModel"
+                        [controlEl]="nameEl"
+                ></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row mb-0 required">
+            <label class="col-md-3 col-form-label" for="pageContent">
+                {{ "Page Content" }}
+            </label>
+            <div class="col-md-9">
+                <angular-editor
+                        required
+                        data-testid="pageContent"
+                        name="pageContent"
+                        id="pageContent"
+                        minlength="7"
+                        maxlength="2147483647"
+                        [placeholder]="'Enter text here...'"
+                        [(ngModel)]="cmsDto.pageContent"
+                        #contentModel="ngModel"
+                        #contentEl></angular-editor>
+                <abp-validation-summary
+                        [control]="contentModel"
+                        [controlEl]="contentEl"
+                ></abp-validation-summary>
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer
+            [cancelDisabled]="saving"
+            [saveDisabled]="!editCMSForm.form.valid || saving"
+            (onCancelClick)="bsModalRef.hide()"
+    ></abp-modal-footer>
+</form>

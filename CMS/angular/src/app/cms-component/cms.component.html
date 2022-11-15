@@ -1,0 +1,34 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 data-testid="pageNameLabel" [hidden]="isLoading">{{ pageName }}</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a data-testid="createBtn" class="btn bg-blue create-cms-btn"
+                       (click)="showCreateOrEditCMSDialog()">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Create" }}
+                    </a>
+                    <a *ngIf="pageId" data-testid="editBtn" class="btn bg-secondary"
+                       (click)="showCreateOrEditCMSDialog(this.pageId)">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Edit" }}
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div data-testid="pageContent" [hidden]="isLoading" [innerHTML]="pageContent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
