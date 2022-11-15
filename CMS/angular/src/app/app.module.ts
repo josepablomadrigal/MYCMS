@@ -38,9 +38,12 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
+
+// Content management system
 import { CmsComponent } from './cms-component/cms.component';
 import { CreateCmsDialogComponent } from './cms-component/create-cms-dialog/create-cms-dialog.component';
 import { EditCmsDialogComponent } from './cms-component/edit-cms-dialog/edit-cms-dialog.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -71,6 +74,7 @@ import { EditCmsDialogComponent } from './cms-component/edit-cms-dialog/edit-cms
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
+    //CMS
     CmsComponent,
     CreateCmsDialogComponent,
     EditCmsDialogComponent
@@ -89,6 +93,7 @@ import { EditCmsDialogComponent } from './cms-component/edit-cms-dialog/edit-cms
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    AngularEditorModule
   ],
   providers: [],
   entryComponents: [

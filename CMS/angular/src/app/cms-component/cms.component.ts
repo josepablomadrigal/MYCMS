@@ -59,7 +59,8 @@ export class CmsComponent extends AppComponentBase implements OnInit {
                     class: 'modal-lg',
                     initialState: {
                         currentCms: this.currentCMS
-                    }
+                    },
+
                 }
             );
         }

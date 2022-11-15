@@ -5,8 +5,9 @@ import { CmsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { HttpClientTestingModule, HttpTestingController } from '@node_modules/@angular/common/http/testing';
 import { BsModalRef } from '@node_modules/ngx-bootstrap/modal';
 import { AppSessionService } from '@shared/session/app-session.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { findEl } from '@app/spec-helpers/element.spec-helper';
+import { AngularEditorModule } from '@node_modules/@kolkov/angular-editor';
 
 describe('CreateCmsDialogComponent', () => {
     let component: CreateCmsDialogComponent;
@@ -18,7 +19,7 @@ describe('CreateCmsDialogComponent', () => {
     beforeEach(async () => {
         const bsModalRefSpy = jasmine.createSpyObj('BsModalRef', ['hide']);
         await TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
+            imports: [HttpClientTestingModule, FormsModule, AngularEditorModule, ReactiveFormsModule],
             declarations: [CreateCmsDialogComponent],
             providers: [
                 CmsServiceProxy,

@@ -39,17 +39,21 @@
                 {{ "Page Content" }}
             </label>
             <div class="col-md-9">
-            <textarea
-                    data-testid="pageContent"
-                    type="text"
-                    class="form-control"
-                    name="pageContent"
-                    id="pageContent"
-                    minlength="7"
-                    maxlength="2147483647"
-                    [(ngModel)]="cmsDto.pageContent"
-            >
-            </textarea>
+                <angular-editor
+                        required
+                        data-testid="pageContent"
+                        name="pageContent"
+                        id="pageContent"
+                        minlength="7"
+                        maxlength="2147483647"
+                        [placeholder]="'Enter text here...'"
+                        [(ngModel)]="cmsDto.pageContent"
+                        #contentModel="ngModel"
+                        #contentEl></angular-editor>
+                <abp-validation-summary
+                        [control]="contentModel"
+                        [controlEl]="contentEl"
+                ></abp-validation-summary>
             </div>
         </div>
     </div>
