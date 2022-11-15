@@ -26,7 +26,9 @@ exports.config = {
       project: 'e2e'
     });
   },
-  onPrepare: function() {
-    jasmine.getEnv().addReporter(new SpecReporter());
+  async function () {
+      jasmine.getEnv().addReporter(SpecReporter);
+
+      await browser.waitForAngularEnabled(false);
   }
 };

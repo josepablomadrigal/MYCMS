@@ -53,7 +53,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         this._cmsServiceProxy.getAll().subscribe((result: ContentManagementSystemDto[]) => {
             this.menuItems[2].children = [];
             result.forEach((item) => {
-                this.menuItems[2].children.push(new MenuItem(this.l(item.pageName), '/app/cms/' + item.id, 'fas fa-book', ''));
+                this.menuItems[2].children.push(new MenuItem(this.l(item.id.toString()), '/app/cms/' + item.id, 'fas fa-book', ''));
             });
         });
     }

@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <h1 [hidden]="isLoading">{{ pageName }}</h1>
+                    <h1 data-testid="pageNameLabel" [hidden]="isLoading">{{ pageName }}</h1>
                 </div>
                 <div class="col-6 text-right">
                     <a data-testid="createBtn" class="btn bg-blue create-cms-btn"
@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <div [hidden]="isLoading" [innerHTML]="pageContent"></div>
+                    <div data-testid="pageContent" [hidden]="isLoading" [innerHTML]="pageContent"></div>
                 </div>
             </div>
         </div>
